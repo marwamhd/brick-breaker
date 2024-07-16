@@ -26,6 +26,7 @@ function moveChar(){
     charDom.style.bottom = char.yPosition +"%"
 
     requestAnimationFrame(moveChar)
+    
 }
 
 window.requestAnimationFrame(moveChar)
