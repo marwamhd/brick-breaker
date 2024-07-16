@@ -1,4 +1,3 @@
-
 let char = {
     xPosition : 50,
     yPosition : 50,
