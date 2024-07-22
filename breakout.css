@@ -3,7 +3,6 @@
     --container-height: 550px;
     --line-width: 130px;
     --line-height: 20px;
-    /* --image-width-and-height: 100px; */
 }
 
 body {
@@ -11,7 +10,6 @@ body {
     color: rgb(255, 255, 255);
     display: flex;
     justify-content: center;
-    /* align-items: center; */
     margin-top: 10px;
     height: 100vh;
 }
@@ -21,7 +19,6 @@ body {
     width: var(--container-width);
     background-color: #ececec63;
     position: relative;
-    /* border: 1px solid black; */
     padding-left: 20px;
     padding-right: 20px;
 }
@@ -68,7 +65,6 @@ body {
     text-align: center;
     margin-bottom: 50px;
     padding: 10px;
-    /* background-color: #d470a2; */
     font-family: pixeled;
     font-size: 11px;
 }
@@ -81,7 +77,6 @@ body {
     text-align: center;
     margin-bottom: 50px;
     padding: 10px;
-    /* background-color: #d470a2; */
     font-family: pixeled;
     font-size: 11px;
 }
@@ -91,13 +86,12 @@ body {
     position: absolute;
     bottom: 0;
     margin-bottom: 5px;
-    left: calc((var(--container-width) - var(--line-width)) / 2);
+    left: 43%;
     width: var(--line-width);
     height: var(--line-height);
 }
 
 .char {
-    /* background-color: rgb(165, 41, 113); */
     position: absolute;
     width: 30px;
     height: 30px;
@@ -117,7 +111,6 @@ body {
     width: 100px;
     height: 30px;
     margin: 15px;
-    background-color: #ffddf4c0;
-    /* background-image: url(marwa\ \(1\).jpg); */
+    background-color: #ffe6f7c0;
     background-position: center;
 }
