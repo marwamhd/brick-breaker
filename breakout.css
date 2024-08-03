@@ -1,15 +1,26 @@
 :root{
     --container-width: 800px;
     --container-height: 550px;
-    --line-width: 130px;
-    --line-height: 20px;
+    --line-width: 500px;
+    --line-height: 100px;
 }
 
 body {
     background-color: rgb(255, 255, 255);
-    color: rgb(255, 255, 255);
+    color: #e0218ab9;
+    text-align: center;
+}
+
+.title{
+    position: absolute;
+    top: 10%;
+}
+.content{
+    background-color: #ececec63;
     display: flex;
     justify-content: center;
+    align-items: center;
+    overflow: hidden;
     margin-top: 10px;
     height: 100vh;
 }
@@ -24,17 +35,18 @@ body {
 }
 
 
-.info {
-    color: #e0218ab9;
-    display: flex;
+/* .info {
+    /* color: #e0218ab9; */
+    /* display: flex;
     justify-content: space-around;
     font-family: pixeled;
     font-size: 10px;
     margin-top: 10px;
-    margin-bottom: 20px;
-}
+    margin-bottom: 20px; 
+} */
 
-.menu {
+
+.menu, .info {
     background-color: #ececec63;
     height: var(--container-height);
     width: 10%;
@@ -45,7 +57,7 @@ body {
 }
 
 
-.start{
+.info div, .menu div{
     color: #e0218ab9;
     display: flex;
     justify-content: center;
@@ -57,29 +69,6 @@ body {
     font-size: 11px;
 }
 
-.pause{
-    color: #e0218ab9;
-    display: flex;
-    justify-content: center;
-    width: 65px;
-    text-align: center;
-    margin-bottom: 50px;
-    padding: 10px;
-    font-family: pixeled;
-    font-size: 11px;
-}
-
-.restart{
-    color: #e0218ab9;
-    display: flex;
-    justify-content: center;
-    width: 65px;
-    text-align: center;
-    margin-bottom: 50px;
-    padding: 10px;
-    font-family: pixeled;
-    font-size: 11px;
-}
 
 .line {
     background-color: #e0218ab9;
@@ -95,7 +84,6 @@ body {
     position: absolute;
     width: 30px;
     height: 30px;
-    border-radius: 15px;
     background-color: #e0218ab9;
     /* bottom: calc((var(--container-height) - var(--image-width-and-height)) / 2); */
     /* left: calc((var(--container-width) - var(--image-width-and-height)) / 2); */
