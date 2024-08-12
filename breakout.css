@@ -1,104 +1,127 @@
-:root{
-    --container-width: 800px;
-    --container-height: 550px;
-    --line-width: 500px;
-    --line-height: 100px;
+:root {
+  --container-width: 800px;
+  --container-height: 550px;
+  --line-width: 250px;
+  --line-height: 20px;
 }
 
 body {
-    background-color: rgb(255, 255, 255);
-    color: #e0218ab9;
-    text-align: center;
+  background-color: rgb(255, 255, 255);
+  color: #d4b4c6;
+  text-align: center;
 }
 
-.title{
-    position: absolute;
-    top: 10%;
+.title {
+  position: absolute;
+  top: 10%;
 }
-.content{
-    background-color: #ececec63;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    margin-top: 10px;
-    height: 100vh;
+.content {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 10px;
+  height: 100vh;
 }
 
 .container {
-    height: var(--container-height);
-    width: var(--container-width);
-    background-color: #ececec63;
-    position: relative;
-    padding-left: 20px;
-    padding-right: 20px;
+  height: var(--container-height);
+  width: var(--container-width);
+  background-color: #f6f3f3;
+  position: relative;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px dashed #A020F0;
 }
 
-
 /* .info {
-    /* color: #e0218ab9; */
-    /* display: flex;
+     color: #e0218ab9; 
+     display: flex;
     justify-content: space-around;
     font-family: pixeled;
     font-size: 10px;
     margin-top: 10px;
     margin-bottom: 20px; 
-} */
+}  */
 
-
-.menu, .info {
-    background-color: #ececec63;
-    height: var(--container-height);
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.menu,
+.info {
+  background-color: #f6f3f3;
+  height: var(--container-height);
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-
-.info div, .menu div{
-    color: #e0218ab9;
-    display: flex;
-    justify-content: center;
-    width: 65px;
-    text-align: center;
-    margin-bottom: 50px;
-    padding: 10px;
-    font-family: pixeled;
-    font-size: 11px;
+.info div,
+.menu div {
+  color: black;
+  display: flex;
+  justify-content: center;
+  /* width: 65px; */
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 10px;
+  font-family: pixeled;
+  font-size: 11px;
 }
-
 
 .line {
-    background-color: #e0218ab9;
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 5px;
-    left: 43%;
-    width: var(--line-width);
-    height: var(--line-height);
+  background-color: blue;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 20px;
+  left: 43%;
+  width: var(--line-width);
+  height: var(--line-height);
 }
 
 .char {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: #e0218ab9;
-    /* bottom: calc((var(--container-height) - var(--image-width-and-height)) / 2); */
-    /* left: calc((var(--container-width) - var(--image-width-and-height)) / 2); */
-    /* height: calc((var(--container-height) - var(--image-width-and-height)) / 2); */
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: red;
+  border-radius: 20px;
+  /* bottom: calc((var(--container-height) - var(--image-width-and-height)) / 2); */
+  /* left: calc((var(--container-width) - var(--image-width-and-height)) / 2); */
+  /* height: calc((var(--container-height) - var(--image-width-and-height)) / 2); */
 }
 
 .strawberries {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 .strawberry {
-    width: 100px;
-    height: 30px;
-    margin: 15px;
-    background-color: #ffe6f7c0;
-    background-position: center;
+  width: 100px;
+  height: 30px;
+  margin: 15px;
+  background-color: #A020F0;
+  background-position: center;
+}
+
+.info-score {
+  flex-direction: column;
+}
+
+.info-score span {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.info-lives {
+  flex-direction: column;
+}
+
+.info-lives span {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.title {
+    margin: 0px;
+    padding: 0px;
 }
