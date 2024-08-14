@@ -13,8 +13,10 @@
   </head>
   <body>
     <div class="content">
+      <!-- <button class="music-button">music</button> -->
       <!-- <div class="title">title here maybe?</div> -->
       <div class="info">
+        
         <div id="info-score" class="info-score">Score 0</div>
         <div class="info-time" id="info-time">0:00</div>
         <div id="info-lives" class="info-lives">3 lives</div>
@@ -26,5 +28,27 @@
         <div class="restart">Restart</div>
       </div>
     </div>
+
+    <div id="gameOverMessage" class="game-over-message hidden">
+      <h1>GAME OVER</h1>
+      <p>Try Again!</p>
+      <p>Your score: <span id="finalScore"></span></p>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
+    
+    <div id="winMessage" class="win-message hidden">
+        <h1>You Won!</h1>
+        <p id="winTime">Time: 0:00</p>
+        <p id="winScore">Score: 0</p>
+        <button onclick="restartGame()">Play Again</button>
+    </div>      
+
+    <div id="lostLifeMessage" class="lost-life-message hidden">
+      <h1>You Just Lost a Life</h1>
+      <p>Want to continue?</p>
+      <button onclick="continueGame()">Continue</button>
+    </div>
+      
+      <!-- <audio id="backgroundMusic" src="music/1 Minute No Copyright Music!.mp3" preload="auto" loop></audio> -->
   </body>
 </html>

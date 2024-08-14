@@ -1,7 +1,7 @@
 :root {
   --container-width: 800px;
   --container-height: 550px;
-  --line-width: 250px;
+  --line-width: 150px;
   --line-height: 20px;
 }
 
@@ -11,17 +11,17 @@ body {
   text-align: center;
 }
 
-.title {
+/* .title {
   position: absolute;
   top: 10%;
-}
+} */
 .content {
   background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   height: 100vh;
 }
 
@@ -30,9 +30,10 @@ body {
   width: var(--container-width);
   background-color: #f6f3f3;
   position: relative;
-  padding-left: 20px;
-  padding-right: 20px;
-  border: 1px dashed #A020F0;
+  /* margin: 2px; */
+  /* padding-left: 20px; */
+  /* padding-right: 20px; */
+  /* border: 1.5px dashed #A020F0; */
 }
 
 /* .info {
@@ -47,6 +48,7 @@ body {
 
 .menu,
 .info {
+  border: 2px solid #facbe5;
   background-color: #f6f3f3;
   height: var(--container-height);
   width: 10%;
@@ -58,7 +60,7 @@ body {
 
 .info div,
 .menu div {
-  color: black;
+  color: #DA1884;
   display: flex;
   justify-content: center;
   /* width: 65px; */
@@ -69,21 +71,28 @@ body {
   font-size: 11px;
 }
 
+.menu {
+  cursor: pointer;
+}
+
 .line {
-  background-color: blue;
+  /* background-color: #DA1884; */
+  background-color: #da1883;
   position: absolute;
   bottom: 0;
   margin-bottom: 20px;
   left: 43%;
   width: var(--line-width);
   height: var(--line-height);
+  padding: 0px;
+  margin-left: 0px;
 }
 
 .char {
   position: absolute;
   width: 30px;
   height: 30px;
-  background-color: red;
+  background-color: #da1883;
   border-radius: 20px;
   /* bottom: calc((var(--container-height) - var(--image-width-and-height)) / 2); */
   /* left: calc((var(--container-width) - var(--image-width-and-height)) / 2); */
@@ -99,8 +108,9 @@ body {
   width: 100px;
   height: 30px;
   margin: 15px;
-  background-color: #A020F0;
+  background-color: #facbe5;
   background-position: center;
+  /* z-index: 1000; */
 }
 
 .info-score {
@@ -122,6 +132,70 @@ body {
 }
 
 .title {
-    margin: 0px;
-    padding: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.hidden {
+  display: none;
+}
+
+.win-message,
+.game-over-message,
+.lost-life-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 9999;
+  width: 250px;
+  height: 250px;
+}
+
+.win-message h1,
+.game-over-message h1,
+.lost-life-message h1 {
+  margin-top: 23px;
+  margin-bottom: 20px;
+  font-size: 40px;
+}
+
+.game-over-message h1 {
+  color: rgb(230, 2, 2);
+  font-size: 38px;
+}
+
+.lost-life-message h1 {
+  font-size: 35px;
+}
+
+.win-message p,
+.game-over-message p,
+.lost-life-message p {
+  margin: 10px 0;
+  font-size: 20px;
+}
+
+.win-message button,
+.game-over-message button,
+.lost-life-message button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.win-message button:hover,
+.game-over-message button:hover,
+.lost-life-message button:hover {
+  background-color: #45a049;
 }

@@ -15,8 +15,8 @@ let playerHit = true;
 let player = {
   width: playerWidth,
   height: playerHeight,
-  position: 43, // Initial position percentage
-  velocityX: 15,
+  position: 50, // Initial position percentage (middle)
+  velocityX: 130,
 };
 
 let char = {
@@ -24,17 +24,58 @@ let char = {
   yPosition: 50,
   width: 30,
   height: 30,
-  xOffset: 0.7,
-  yOffset: 0.7,
+  xOffset: 1,
+  yOffset: 1,
 };
 
 let blocks = [];
 
 let gameRunning = false; // A flag to control the game loop
 let timerInterval; // Variable to hold the timer interval
-let animationFrameId;
+let playerAnimationFrameId; // To store the player animation frame ID
+let charAnimationFrameId; // To store the character animation frame ID
+let keysPressed = {}; // To track the keys being pressed
 
-document.addEventListener("keydown", movePlayer);
+let moveDirection = 0; // 0: no movement, -1: left, 1: right
+
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Enter") {
+    handleEnterKey();
+  } else if (e.code === "KeyP") {
+    pauseGame();
+  } else if (e.code === "KeyC") {
+    continueGame();
+  } else if (e.code === "KeyR") {
+    restartGame();
+  } else if (e.code === "ArrowLeft") {
+    keysPressed[e.code] = true;
+    moveDirection = -1;
+    if (!playerAnimationFrameId) {
+      playerAnimationFrameId = requestAnimationFrame(movePlayer);
+    }
+  } else if (e.code === "ArrowRight") {
+    keysPressed[e.code] = true;
+    moveDirection = 1;
+    if (!playerAnimationFrameId) {
+      playerAnimationFrameId = requestAnimationFrame(movePlayer);
+    }
+  }
+});
+
+document.addEventListener("keyup", (e) => {
+  if (e.code === "ArrowLeft" || e.code === "ArrowRight") {
+    delete keysPressed[e.code];
+    if (!keysPressed["ArrowLeft"] && !keysPressed["ArrowRight"]) {
+      moveDirection = 0;
+      cancelAnimationFrame(playerAnimationFrameId);
+      playerAnimationFrameId = null;
+    } else if (keysPressed["ArrowLeft"] && !keysPressed["ArrowRight"]) {
+      moveDirection = -1;
+    } else if (keysPressed["ArrowRight"] && !keysPressed["ArrowLeft"]) {
+      moveDirection = 1;
+    }
+  }
+});
 
 function createGameElements() {
   // Clear existing game container content if any
@@ -80,8 +121,8 @@ function resetGame() {
     lives +
     "</span>";
 
-  player.position = 0;
-  char.xPosition = 80;
+  player.position = 50; // Reset player position to the middle
+  char.xPosition =  Math.random() * 100;
   char.yPosition = 50;
 
   // Reset styles
@@ -92,47 +133,77 @@ function resetGame() {
 
 // Start the game
 function startGame() {
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null; // ensure animationFrameId is reset
+  
+  if (playerAnimationFrameId) {
+    cancelAnimationFrame(playerAnimationFrameId);
+    playerAnimationFrameId = null; // ensure playerAnimationFrameId is reset
   }
 
-  // create the game elements only once
-  if (blocks.length === 0) {
-    createGameElements();
+  if (charAnimationFrameId) {
+    cancelAnimationFrame(charAnimationFrameId);
+    charAnimationFrameId = null; // ensure charAnimationFrameId is reset
   }
 
+  createGameElements();
   // Reset game state
   resetGame();
 
+  checkWinCondition();
+
   // Start the game loop
   gameRunning = true;
-  window.requestAnimationFrame(moveChar);
+  charAnimationFrameId = requestAnimationFrame(moveChar);
   startTimer();
 
   document.querySelector(".pause").addEventListener("click", pauseGame);
   document.querySelector(".continue").addEventListener("click", continueGame);
   document.querySelector(".restart").addEventListener("click", restartGame);
+
+  playerAnimationFrameId = requestAnimationFrame(movePlayer);
 }
 
 function moveChar() {
-  if (!gameRunning) return; // Stop the loop if the game has ended
+  if (!gameRunning) return;
 
   let charDom = document.getElementById("char");
   char.xPosition += char.xOffset;
   char.yPosition += char.yOffset;
 
-  // Reverse direction if the char hits the bounds
-  if (char.xPosition <= 0 || char.xPosition >= 90) {
+  // Get the container width and height
+  let containerWidth = document.getElementById("container").offsetWidth;
+  let containerHeight = document.getElementById("container").offsetHeight;
+
+  // Get the character width and height
+  let charWidth = charDom.offsetWidth;
+  let charHeight = charDom.offsetHeight;
+
+  // Boundary conditions
+  if (
+    char.xPosition <= 0 ||
+    char.xPosition >= 100 - (charWidth / containerWidth) * 100
+  ) {
     char.xOffset *= -1;
+    char.xPosition = Math.max(
+      0,
+      Math.min(char.xPosition, 100 - (charWidth / containerWidth) * 100)
+    );
   }
-  if (char.yPosition <= 0 || char.yPosition >= 90) {
+  if (
+    char.yPosition <= 0 ||
+    char.yPosition >= 100 - (charHeight / containerHeight) * 100
+  ) {
     char.yOffset *= -1;
+    char.yPosition = Math.max(
+      0,
+      Math.min(char.yPosition, 100 - (charHeight / containerHeight) * 100)
+    );
   }
 
   // Update the char's position
   charDom.style.left = char.xPosition + "%";
   charDom.style.bottom = char.yPosition + "%";
+
+  // Check console logs for position values
 
   isInContact();
 
@@ -141,43 +212,52 @@ function moveChar() {
     endGame();
   }
 
-  animationFrameId = requestAnimationFrame(moveChar);
+  charAnimationFrameId = requestAnimationFrame(moveChar);
 }
 
-function movePlayer(e) {
+function movePlayer() {
   if (!gameRunning) return; // Prevent player movement if the game has ended
 
   let lineElement = document.getElementById("line");
   let currentPercentage = player.position;
   let nextPlayerX;
 
-  if (e.code === "ArrowLeft") {
-    nextPlayerX = currentPercentage - player.velocityX;
+  if (moveDirection === -1) {
+    nextPlayerX = currentPercentage - player.velocityX / 60;
     if (nextPlayerX > 0) {
       player.position = nextPlayerX;
       lineElement.style.left = nextPlayerX + "%";
     } else {
-      // Prevent player from moving beyond the left boundary
       player.position = 0;
       lineElement.style.left = "0%";
     }
-  } else if (e.code === "ArrowRight") {
-    nextPlayerX = currentPercentage + player.velocityX;
-    // Calculate the maximum allowed position
+  } else if (moveDirection === 1) {
+    nextPlayerX = currentPercentage + player.velocityX / 60;
+    let containerWidth = document.getElementById("container").offsetWidth;
+    let playerWidth = lineElement.offsetWidth;
     let maxPercentage = ((containerWidth - playerWidth) / containerWidth) * 100;
 
     if (nextPlayerX <= maxPercentage) {
       player.position = nextPlayerX;
       lineElement.style.left = nextPlayerX + "%";
     } else {
-      // Prevent player from moving beyond the right boundary
       player.position = maxPercentage;
       lineElement.style.left = maxPercentage + "%";
     }
   }
+
+  if (moveDirection !== 0) {
+    playerAnimationFrameId = requestAnimationFrame(movePlayer);
+  } else {
+    cancelAnimationFrame(playerAnimationFrameId);
+    playerAnimationFrameId = null;
+  }
 }
 
 function isInContact() {
+
+  // checkWinCondition();
+
   let charDom = document.getElementById("char");
   let lineDom = document.getElementById("line");
 
@@ -188,7 +268,6 @@ function isInContact() {
       topCollision(charDom, blockElement) ||
       bottomCollision(charDom, blockElement)
     ) {
-      console.log("top collision");
       // Reverse the direction of the character if it collides with the line
       char.yOffset *= -1;
       blockElement.style.backgroundColor = "#f6f3f3";
@@ -198,6 +277,7 @@ function isInContact() {
         blocks.splice(index, 1); // 2nd parameter means remove one item only
         score += 50;
         scoreDom.innerHTML = `<span>Score</span><span>${score}</span>`;
+        checkWinCondition();
       }
     }
 
@@ -206,7 +286,6 @@ function isInContact() {
       rightCollision(charDom, blockElement)
     ) {
       char.xOffset *= -1;
-      console.log("left or right collision");
       blockElement.style.backgroundColor = "#f6f3f3";
       const index = blocks.indexOf(blockElement);
       if (index > -1) {
@@ -214,16 +293,14 @@ function isInContact() {
         blocks.splice(index, 1); // 2nd parameter means remove one item only
         score += 50;
         scoreDom.innerHTML = `<span>Score</span><span>${score}</span>`;
+        checkWinCondition();
       }
     }
 
-    if (bottomCollision(charDom, blockElement)) {
-      console.log("bottom touched");
-    }
+  
   }
 
   if (topCollision(charDom, lineDom) && playerHit) {
-    console.log("top collision");
     playerHit = false;
     setVariableTrueAfterDelay(playerHit); //
 
@@ -236,7 +313,6 @@ function isInContact() {
     playerHit
   ) {
     char.xOffset *= -1;
-    console.log("left or right collision");
     playerHit = false;
     setVariableTrueAfterDelay(playerHit); //
   }
@@ -244,7 +320,6 @@ function isInContact() {
   if (isInside(charDom, lineDom)) {
     // handleInsidePosition(char, charDom, lineDom);
 
-    console.log(isRightInside(charDom, lineDom));
 
     char.yPosition =
       parseFloat(lineDom.style.bottom) + (playerHeight / containerHeight) * 100;
@@ -258,7 +333,6 @@ function isInContact() {
         parseFloat(lineDom.style.left) + (playerWidth / containerWidth) * 100;
     }
 
-    console.log(char.xPosition);
 
     charDom.style.left = char.xPosition + "%";
     charDom.style.bottom = char.yPosition + "%";
@@ -268,6 +342,7 @@ function isInContact() {
     // playerHit = false;
     // setVariableTrueAfterDelay(playerHit); //
   }
+  
 }
 
 function isTopInside(rect1Dom, rect2Dom) {
@@ -366,7 +441,10 @@ function endGame(now = false) {
       lives +
       "</span>";
 
-    resetGame();
+    // Pause the game and show the lost life message
+    pauseGame();
+    resetGame(); // Reset the game elements to the middle
+    showLostLifeMessage();
     return;
   }
 
@@ -379,8 +457,29 @@ function endGame(now = false) {
   if (lives <= 0) {
     gameRunning = false; // Stop the game loop
     clearInterval(timerInterval); // Stop the timer
-    alert("Game Over!");
-    // Optionally update the UI to show game over status
+
+    // Show the game over message and display the score
+    const gameOverMessage = document.getElementById("gameOverMessage");
+    const finalScoreElement = document.getElementById("finalScore");
+
+    if (gameOverMessage && finalScoreElement) {
+      finalScoreElement.textContent = score; // Replace `score` with your score variable
+      gameOverMessage.classList.remove("hidden");
+    }
+  }
+}
+
+function showLostLifeMessage() {
+  const lostLifeMessage = document.getElementById("lostLifeMessage");
+  if (lostLifeMessage) {
+    lostLifeMessage.classList.remove("hidden");
+  }
+}
+
+function hideLostLifeMessage() {
+  const lostLifeMessage = document.getElementById("lostLifeMessage");
+  if (lostLifeMessage) {
+    lostLifeMessage.classList.add("hidden");
   }
 }
 
@@ -392,29 +491,64 @@ function pauseGame() {
 }
 
 function continueGame() {
+  hideLostLifeMessage();
   if (!gameRunning) {
     gameRunning = true;
-    window.requestAnimationFrame(moveChar);
+    charAnimationFrameId = requestAnimationFrame(moveChar);
 
     startTimer();
+  }
+  if (lives <= 0) {
+    gameRunning = false;
+    return;
   }
 }
 
 function restartGame() {
-  createGameElements();
-
+  // checkWinCondition();
   gameRunning = false;
   clearInterval(timerInterval); // stop the current timer
 
+  // Reset game state
   lives = 3;
   score = 0;
+  blocks = [];
+  scoreDom.innerHTML = `<span>Score</span><span>${score}</span>`;
+  livesDom.innerHTML = "<span class='info-lives'>Lives</span><span class='info-lives'>" + lives + "</span>";
 
-  // reset the timer
+  // Reset the timer
   const timeElement = document.getElementById("info-time");
-  timeElement.textContent = "3:00";
+  timeElement.textContent = "0:00";
 
-  // Restart the game
+  // Hide win and game over messages
+  const winMessage = document.getElementById("winMessage");
+  if (winMessage) winMessage.classList.add("hidden");
+
+  const lostlifemessage = document.getElementById("lostLifeMessage");
+  if (lostlifemessage) lostlifemessage.classList.add("hidden");
+
+  const gameOverMessage = document.getElementById("gameOverMessage");
+  if (gameOverMessage) gameOverMessage.classList.add("hidden");
+
+  // Start the game
   startGame();
+
+  // checkWinCondition();
+
+}
+
+function handleEnterKey() {
+  const winMessage = document.getElementById("winMessage");
+  const gameOverMessage = document.getElementById("gameOverMessage");
+  const lostLifeMessage = document.getElementById("lostLifeMessage");
+
+  if (!winMessage.classList.contains("hidden")) {
+    restartGame();
+  } else if (!gameOverMessage.classList.contains("hidden")) {
+    restartGame();
+  } else if (!lostLifeMessage.classList.contains("hidden")) {
+    continueGame();
+  }
 }
 
 function topCollision(rect1Dom, rect2Dom) {
@@ -512,6 +646,31 @@ function checkCollision(rect1Dom, rect2Dom) {
   );
 }
 
+function checkWinCondition() {
+  // alert(blocks.length);
+  if (blocks.length === 0) {
+    winGame();
+  }
+}
+
+function winGame() {
+  console.log("Win game function called");
+  gameRunning = false;
+  clearInterval(timerInterval);
+
+  const winMessage = document.getElementById("winMessage");
+  const winTime = document.getElementById("winTime");
+  const winScore = document.getElementById("winScore");
+
+  if (winMessage && winTime && winScore) {
+    winTime.textContent =
+      "Time: " + document.getElementById("info-time").textContent;
+    winScore.textContent = "Score: " + score;
+
+    winMessage.classList.remove("hidden");
+  }
+}
+
 
 // Initialize the game when the page loads
-window.onload = startGame;
+window.onload = startGame();
