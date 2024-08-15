@@ -11,17 +11,12 @@ body {
   text-align: center;
 }
 
-/* .title {
-  position: absolute;
-  top: 10%;
-} */
 .content {
   background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  /* margin-top: 10px; */
   height: 100vh;
 }
 
@@ -30,21 +25,7 @@ body {
   width: var(--container-width);
   background-color: #f6f3f3;
   position: relative;
-  /* margin: 2px; */
-  /* padding-left: 20px; */
-  /* padding-right: 20px; */
-  /* border: 1.5px dashed #A020F0; */
 }
-
-/* .info {
-     color: #e0218ab9; 
-     display: flex;
-    justify-content: space-around;
-    font-family: pixeled;
-    font-size: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px; 
-}  */
 
 .menu,
 .info {
@@ -63,7 +44,6 @@ body {
   color: #DA1884;
   display: flex;
   justify-content: center;
-  /* width: 65px; */
   text-align: center;
   margin-bottom: 50px;
   padding: 10px;
@@ -76,7 +56,6 @@ body {
 }
 
 .line {
-  /* background-color: #DA1884; */
   background-color: #da1883;
   position: absolute;
   bottom: 0;
@@ -94,9 +73,6 @@ body {
   height: 30px;
   background-color: #da1883;
   border-radius: 20px;
-  /* bottom: calc((var(--container-height) - var(--image-width-and-height)) / 2); */
-  /* left: calc((var(--container-width) - var(--image-width-and-height)) / 2); */
-  /* height: calc((var(--container-height) - var(--image-width-and-height)) / 2); */
 }
 
 .strawberries {
@@ -110,7 +86,6 @@ body {
   margin: 15px;
   background-color: #facbe5;
   background-position: center;
-  /* z-index: 1000; */
 }
 
 .info-score {

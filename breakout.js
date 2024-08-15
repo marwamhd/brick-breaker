@@ -256,8 +256,6 @@ function movePlayer() {
 
 function isInContact() {
 
-  // checkWinCondition();
-
   let charDom = document.getElementById("char");
   let lineDom = document.getElementById("line");
 
@@ -386,25 +384,6 @@ function isRightInside(rect1Dom, rect2Dom) {
   return false;
 }
 
-// function handleInsidePosition(char, rect1Dom, rect2Dom) {
-//     let rect2StyleLeft = parseFloat(rect2Dom.style.left) || 0; // Default to 0 if not set
-//     let rect2StyleBottom = parseFloat(rect2Dom.style.bottom) || 0; // Default to 0 if not set
-
-//     // Determine if the character is more towards the top or right
-//     let charDom = document.getElementById("char");
-//     let charStyleLeft = parseFloat(charDom.style.left) || 0;
-//     let charStyleBottom = parseFloat(charDom.style.bottom) || 0;
-
-//     if (charStyleLeft + char.width / 2 < rect2StyleLeft + rect2Dom.offsetWidth / 2) {
-//       // If the character's center is left of the container's center, move it to the right
-//       char.xPosition = rect2StyleLeft + 80; // Move to the right of rect2
-//       charDom.style.left = char.xPosition + "%";
-//     } else {
-//       // Otherwise, move it to the top of the container
-//       char.yPosition = rect2StyleBottom + 10; // Move to the top of rect2
-//       charDom.style.bottom = char.yPosition + "%";
-//     }
-//   }
 
 function setVariableTrueAfterDelay(variableSetter) {
   setTimeout(() => {
@@ -505,7 +484,6 @@ function continueGame() {
 }
 
 function restartGame() {
-  // checkWinCondition();
   gameRunning = false;
   clearInterval(timerInterval); // stop the current timer
 
@@ -532,8 +510,6 @@ function restartGame() {
 
   // Start the game
   startGame();
-
-  // checkWinCondition();
 
 }
 
