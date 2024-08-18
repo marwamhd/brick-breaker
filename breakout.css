@@ -9,6 +9,7 @@ body {
   background-color: rgb(255, 255, 255);
   color: #d4b4c6;
   text-align: center;
+  font-family: "Pixelify Sans", sans-serif;
 }
 
 .content {
@@ -41,14 +42,14 @@ body {
 
 .info div,
 .menu div {
-  color: #DA1884;
+  color: #da1884;
   display: flex;
   justify-content: center;
   text-align: center;
   margin-bottom: 50px;
   padding: 10px;
-  font-family: pixeled;
-  font-size: 11px;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 20px;
 }
 
 .menu {
@@ -173,4 +174,22 @@ body {
 .game-over-message button:hover,
 .lost-life-message button:hover {
   background-color: #45a049;
+}
+
+@media screen and (max-width: 1024px) {
+  body {
+    display: none;
+  }
+  html {
+    background: url("images/screenerror.jpg");
+  }
+}
+
+@media screen and (max-height: 1024px) {
+  body {
+    display: none;
+  }
+  html {
+    background: url("images/screenerror.jpg");
+  }
 }
