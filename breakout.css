@@ -3,7 +3,12 @@
   --container-height: 550px;
   --line-width: 150px;
   --line-height: 20px;
+
 }
+
+/* html {
+  background-image: none !important;
+} */
 
 body {
   background-color: rgb(255, 255, 255);
@@ -181,15 +186,15 @@ body {
     display: none;
   }
   html {
-    background: url("images/screenerror.jpg");
+    background-image: url("images/screenerror.jpg");
   }
 }
 
-@media screen and (max-height: 1024px) {
+@media screen and (max-height: 500px) {
   body {
     display: none;
   }
   html {
-    background: url("images/screenerror.jpg");
+    background-image: url("images/screenerror.jpg");
   }
 }
