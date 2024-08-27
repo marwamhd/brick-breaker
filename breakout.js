@@ -517,16 +517,18 @@ function continueGame() {
   }
   // Hide the checkpoint message
   const checkpointMessageDiv = document.getElementById("checkpointMessage");
-  checkpointMessageDiv.style.display = "none";
+  // checkpointMessageDiv.style.display = "none";
+  checkpointMessageDiv.classList.add("hidden");
 
   //Remove the click listener after continuing
-  const continueButton = document.getElementById("continue-game");
-  continueButton.removeEventListener("click", continueGame);
+  // const continueButton = document.getElementById("continue-game");
+  // continueButton.removeEventListener("click", continueGame);
 }
 
 function restartGame() {
   // Stop the game and reset state
   gameRunning = false;
+  checkpointMessageShown = false;
   clearInterval(timerInterval); // stop the current timer
 
   // Reset game state
@@ -575,6 +577,8 @@ function handleEnterKey() {
   const winMessage = document.getElementById("winMessage");
   const gameOverMessage = document.getElementById("gameOverMessage");
   const lostLifeMessage = document.getElementById("lostLifeMessage");
+  const introduction = document.getElementById("introduction");
+  const content = document.querySelector(".content");
 
   if (!winMessage.classList.contains("hidden")) {
     restartGame();
@@ -582,6 +586,10 @@ function handleEnterKey() {
     restartGame();
   } else if (!lostLifeMessage.classList.contains("hidden")) {
     continueGame();
+  } else if (!introduction.classList.contains("hidden")) {
+    introduction.classList.add("hidden");
+    content.classList.remove("hidden");
+    startGame();
   }
 }
 
