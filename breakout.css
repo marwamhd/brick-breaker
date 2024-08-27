@@ -3,21 +3,21 @@
   --container-height: 550px;
   --line-width: 150px;
   --line-height: 20px;
-
 }
-
-/* html {
-  background-image: none !important;
-} */
 
 body {
   background-color: rgb(255, 255, 255);
   color: #d4b4c6;
   text-align: center;
   font-family: "Pixelify Sans", sans-serif;
+  background-image: url('images/treasure20.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .content {
+  /* background-image: url('images/t20.png'); */
   background-color: #ffffff;
   display: flex;
   justify-content: center;
@@ -35,7 +35,8 @@ body {
 
 .menu,
 .info {
-  border: 2px solid #facbe5;
+  /* border: 2px solid #facbe5; */
+  margin: 10px;
   background-color: #f6f3f3;
   height: var(--container-height);
   width: 10%;
@@ -46,7 +47,7 @@ body {
 }
 
 .info div,
-.menu div {
+.menu button {
   color: #da1884;
   display: flex;
   justify-content: center;
@@ -57,12 +58,17 @@ body {
   font-size: 20px;
 }
 
-.menu {
-  cursor: pointer;
+.menu button{
+  color: white;
+  cursor: pointer ;
+  border: none;
+  background-color: #da1884;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 .line {
-  background-color: #da1883;
+  background-color: #facbe5;
   position: absolute;
   bottom: 0;
   margin-bottom: 20px;
@@ -121,8 +127,6 @@ body {
   display: none;
 }
 
-.win-message,
-.game-over-message,
 .lost-life-message {
   position: fixed;
   top: 50%;
@@ -138,47 +142,146 @@ body {
   height: 250px;
 }
 
-.win-message h1,
-.game-over-message h1,
 .lost-life-message h1 {
   margin-top: 23px;
   margin-bottom: 20px;
   font-size: 40px;
 }
 
-.game-over-message h1 {
-  color: rgb(230, 2, 2);
-  font-size: 38px;
-}
-
 .lost-life-message h1 {
   font-size: 35px;
 }
 
-.win-message p,
-.game-over-message p,
 .lost-life-message p {
   margin: 10px 0;
   font-size: 20px;
 }
 
-.win-message button,
-.game-over-message button,
 .lost-life-message button {
   padding: 10px 20px;
   margin-top: 20px;
-  background-color: #4caf50;
+  background-color: #da1883;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 15px;
+  font-family: "Pixelify Sans", sans-serif;
 }
 
-.win-message button:hover,
-.game-over-message button:hover,
 .lost-life-message button:hover {
-  background-color: #45a049;
+  background-color: #da1883;
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+.introduction {
+  position: absolute;
+  top: 70px;
+  left: 350px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 9999;
+  height: 500px;
+  width: 90%;
+  max-width: 700px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: -1;
+}
+
+.introduction h1,
+.checkpoint-message h1,
+.game-over-message h1,
+.win-message h1 {
+  color: #da1883;
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.game-over-message h1 {
+  color: red;
+}
+
+.win-message h1 {
+  color: rgb(61, 208, 61);
+}
+
+.introduction p,
+.checkpoint-message p,
+.game-over-message p,
+.win-message p {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.introduction button,
+.checkpoint-message button,
+.game-over-message button,
+.win-message button {
+  padding: 10px 20px;
+  background-color: #da1883;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+.introduction button:hover,
+.checkpoint-message button:hover,
+.game-over-message button:hover,
+.win-message button:hover {
+  background-color: #d70b7b;
+}
+
+.hidden,
+.checkpoint-message.hidden,
+.game-over-message.hidden,
+.win-message.hidden {
+  display: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.checkpoint-message,
+.game-over-message,
+.win-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 9999;
+  width: 90%;
+  max-width: 700px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 @media screen and (max-width: 1024px) {

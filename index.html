@@ -3,56 +3,116 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MakeYourGame</title>
+    <title>Breakout Adventure</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Pixelify+Sans:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="breakout.css" />
     <script defer src="breakout.js"></script>
   </head>
   <body>
-    <div class="content">
-      <!-- <button class="music-button">music</button> -->
-      <!-- <div class="title">title here maybe?</div> -->
+    <div id="introduction" class="introduction">
+      <h1>Welcome, Brave Hero!</h1>
+      <p>
+        In a land shrouded in mystery and enchantment, you have been chosen to
+        undertake a heroic quest. Your mission is to break through the enchanted
+        bricks that imprison the treasures of old. These bricks are magically
+        fortified and will challenge your skills and courage.
+      </p>
+      <p>
+        As you embark on this journey, remember that your actions will determine
+        the fate of these captured treasures. Each brick you break brings you
+        closer to freeing them and completing your quest.
+      </p>
+      <p>
+        Prepare yourself for the adventure ahead. Your journey begins now. Click
+        the button below to start the game and test your bravery!
+      </p>
+      <button id="startGameButton">Start Game</button>
+    </div>
+
+    <div class="content hidden">
+      <!-- Existing game content goes here -->
       <div class="info">
-        
-        <div id="info-score" class="info-score">Score 0</div>
-        <div class="info-time" id="info-time">0:00</div>
-        <div id="info-lives" class="info-lives">3 lives</div>
+        <div id="info-score" class="info-score">Score: 0</div>
+        <div class="info-time" id="info-time">Time: 0:00</div>
+        <div id="info-lives" class="info-lives">Lives: 3</div>
       </div>
-      <div class="container" id="container">></div>
+      <div class="container" id="container"></div>
       <div class="menu">
-        <div class="pause">Pause</div>
-        <div class="continue">Continue</div>
-        <div class="restart">Restart</div>
+        <button class="pause">Pause</button>
+        <button class="continue">Continue</button>
+        <button class="restart">Restart</button>
       </div>
     </div>
 
     <div id="gameOverMessage" class="game-over-message hidden">
-      <h1>GAME OVER</h1>
-      <p>Try Again!</p>
+      <h1>GAME OVER!</h1>
+      <p>
+        The enchanted bricks have proven to be an overwhelming force, and your
+        journey has reached an unexpected end. The magic that holds these bricks
+        was too powerful to overcome this time, and the treasures remain
+        imprisoned.
+      </p>
+      <p>
+        Even the greatest heroes face setbacks. Take this moment to reflect and
+        gather your strength. The path to victory is paved with patience, and
+        your next attempt could be the one that turns the tide.
+      </p>
+      <p>
+        Click below to begin a new quest and turn the tide of fate in your
+        favor. Your adventure is not over—it's just beginning!
+      </p>
       <p>Your score: <span id="finalScore"></span></p>
       <button onclick="restartGame()">Play Again</button>
     </div>
-    
+
     <div id="winMessage" class="win-message hidden">
-        <h1>You Won!</h1>
-        <p id="winTime">Time: 0:00</p>
-        <p id="winScore">Score: 0</p>
-        <button onclick="restartGame()">Play Again</button>
-    </div>      
+      <h1>Victory 🥁🥁🥁 !</h1>
+      <p>
+        Through sheer determination and unmatched skill, you have defeated the
+        enchanted bricks and reclaimed the lost treasures. Your journey has come
+        to a triumphant close, and the land sings your praises.
+      </p>
+      <p>
+        The magic that once held these treasures captive has been shattered by
+        your relentless bravery. You’ve not only completed the quest but have
+        set a new standard for heroes everywhere.
+      </p>
+      <p>
+        As the land celebrates your success, Click below to embark on a new adventure or savor the glory of
+        your epic triumph. The realm will remember your name forever!
+      </p>
+      <p id="winTime">Time: 0:00</p>
+      <p id="winScore">Score: 0</p>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
 
     <div id="lostLifeMessage" class="lost-life-message hidden">
       <h1>You Just Lost a Life</h1>
       <p>Want to continue?</p>
       <button onclick="continueGame()">Continue</button>
     </div>
-    
 
+    <div id="checkpointMessage" class="checkpoint-message hidden">
+      <h1>Well Done!</h1>
+      <p>
+        You've made great progress and freed some of the treasures. Keep going
+        to complete your quest and unlock the rest of the treasures!
+      </p>
+      <p>
+        Continue with courage and determination. Your journey is almost over.
+      </p>
+      <button id="continueGameButton" onclick="continueGame()">
+        Continue Game
+      </button>
+    </div>
   </body>
-  
 </html>

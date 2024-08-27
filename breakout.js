@@ -37,6 +37,7 @@ let charAnimationFrameId; // To store the character animation frame ID
 let keysPressed = {}; // To track the keys being pressed
 
 let moveDirection = 0; // 0: no movement, -1: left, 1: right
+let checkpointMessageShown = false;
 
 document.addEventListener("keydown", (e) => {
   if (e.code === "Enter") {
@@ -78,6 +79,8 @@ document.addEventListener("keyup", (e) => {
 });
 
 function createGameElements() {
+  blocks = [];
+
   // Clear existing game container content if any
   const container = document.querySelector(".container");
   container.innerHTML = ""; // Clear existing content
@@ -113,7 +116,10 @@ function resetGame() {
   if (lives <= 0) {
     lives = 3;
     score = 0;
+    checkpointMessageShown = false;
   }
+
+  checkWinCondition();
 
   scoreDom.innerHTML = `<span>Score</span><span>${score}</span>`;
   livesDom.innerHTML =
@@ -121,8 +127,8 @@ function resetGame() {
     lives +
     "</span>";
 
-  player.position = 50; // Reset player position to the middle
-  char.xPosition =  Math.random() * 100;
+  // player.position = 50;
+  char.xPosition = Math.random() * 100;
   char.yPosition = 50;
 
   // Reset styles
@@ -133,7 +139,18 @@ function resetGame() {
 
 // Start the game
 function startGame() {
-  
+  document.addEventListener("DOMContentLoaded", () => {
+    const startGameButton = document.getElementById("startGameButton");
+    const introduction = document.getElementById("introduction");
+    const content = document.querySelector(".content");
+
+    startGameButton.addEventListener("click", () => {
+      introduction.classList.add("hidden");
+      content.classList.remove("hidden");
+      startGame();
+    });
+  });
+
   if (playerAnimationFrameId) {
     cancelAnimationFrame(playerAnimationFrameId);
     playerAnimationFrameId = null; // ensure playerAnimationFrameId is reset
@@ -255,7 +272,6 @@ function movePlayer() {
 }
 
 function isInContact() {
-
   let charDom = document.getElementById("char");
   let lineDom = document.getElementById("line");
 
@@ -266,15 +282,20 @@ function isInContact() {
       topCollision(charDom, blockElement) ||
       bottomCollision(charDom, blockElement)
     ) {
-      // Reverse the direction of the character if it collides with the line
       char.yOffset *= -1;
       blockElement.style.backgroundColor = "#f6f3f3";
       const index = blocks.indexOf(blockElement);
       if (index > -1) {
-        // only splice array when item is found
-        blocks.splice(index, 1); // 2nd parameter means remove one item only
+        blocks.splice(index, 1); // Remove the block from array
         score += 50;
         scoreDom.innerHTML = `<span>Score</span><span>${score}</span>`;
+
+        // Check for checkpoint
+        if (blocks.length <= (6 * 4) / 2 && !checkpointMessageShown) {
+          showCheckpointMessage();
+          checkpointMessageShown = true;
+        }
+
         checkWinCondition();
       }
     }
@@ -287,22 +308,25 @@ function isInContact() {
       blockElement.style.backgroundColor = "#f6f3f3";
       const index = blocks.indexOf(blockElement);
       if (index > -1) {
-        // only splice array when item is found
-        blocks.splice(index, 1); // 2nd parameter means remove one item only
+        blocks.splice(index, 1); // Remove the block from array
         score += 50;
         scoreDom.innerHTML = `<span>Score</span><span>${score}</span>`;
+
+        // Check for checkpoint
+        if (blocks.length <= (6 * 4) / 2 && !checkpointMessageShown) {
+          showCheckpointMessage();
+          checkpointMessageShown = true;
+        }
+
         checkWinCondition();
       }
     }
-
-  
   }
 
   if (topCollision(charDom, lineDom) && playerHit) {
     playerHit = false;
-    setVariableTrueAfterDelay(playerHit); //
+    setVariableTrueAfterDelay(playerHit);
 
-    // Reverse the direction of the character if it collides with the line
     char.yOffset *= -1;
   }
 
@@ -312,13 +336,10 @@ function isInContact() {
   ) {
     char.xOffset *= -1;
     playerHit = false;
-    setVariableTrueAfterDelay(playerHit); //
+    setVariableTrueAfterDelay(playerHit);
   }
 
   if (isInside(charDom, lineDom)) {
-    // handleInsidePosition(char, charDom, lineDom);
-
-
     char.yPosition =
       parseFloat(lineDom.style.bottom) + (playerHeight / containerHeight) * 100;
 
@@ -331,16 +352,23 @@ function isInContact() {
         parseFloat(lineDom.style.left) + (playerWidth / containerWidth) * 100;
     }
 
-
     charDom.style.left = char.xPosition + "%";
     charDom.style.bottom = char.yPosition + "%";
-
-    console.log(lineDom.style.left);
-    console.log("Character moved to avoid being inside the element!");
-    // playerHit = false;
-    // setVariableTrueAfterDelay(playerHit); //
   }
-  
+}
+
+function showCheckpointMessage() {
+  const checkpointMessage = document.getElementById("checkpointMessage");
+  checkpointMessage.classList.remove("hidden");
+
+  blocks.forEach(block => {
+    block.style.backgroundColor = "#BD9A3A";
+  });
+  // Pause the game
+  pauseGame();
+
+  // Add event listener to the "Continue Game" button
+  document.querySelector(".continue").addEventListener("click", continueGame);
 }
 
 function isTopInside(rect1Dom, rect2Dom) {
@@ -384,7 +412,6 @@ function isRightInside(rect1Dom, rect2Dom) {
   return false;
 }
 
-
 function setVariableTrueAfterDelay(variableSetter) {
   setTimeout(() => {
     playerHit = true;
@@ -393,21 +420,28 @@ function setVariableTrueAfterDelay(variableSetter) {
 
 function startTimer() {
   const timeElement = document.getElementById("info-time");
+
+  // Initialize minutes and seconds
   let [minutes, seconds] = timeElement.textContent
     .split(" ")[0]
     .split(":")
     .map(Number);
 
+  // If either value is NaN (for example, if the timer was empty initially), set them to 0
+  if (isNaN(minutes)) minutes = 0;
+  if (isNaN(seconds)) seconds = 0;
+
   clearInterval(timerInterval);
 
   timerInterval = setInterval(() => {
-    if (seconds == 59) {
+    if (seconds === 59) {
       seconds = 0;
       minutes++;
     } else {
       seconds++;
     }
 
+    // Update the time in the format mm:ss
     timeElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   }, 1000);
 }
@@ -481,9 +515,17 @@ function continueGame() {
     gameRunning = false;
     return;
   }
+  // Hide the checkpoint message
+  const checkpointMessageDiv = document.getElementById("checkpointMessage");
+  checkpointMessageDiv.style.display = "none";
+
+  //Remove the click listener after continuing
+  const continueButton = document.getElementById("continue-game");
+  continueButton.removeEventListener("click", continueGame);
 }
 
 function restartGame() {
+  // Stop the game and reset state
   gameRunning = false;
   clearInterval(timerInterval); // stop the current timer
 
@@ -492,7 +534,10 @@ function restartGame() {
   score = 0;
   blocks = [];
   scoreDom.innerHTML = `<span>Score</span><span>${score}</span>`;
-  livesDom.innerHTML = "<span class='info-lives'>Lives</span><span class='info-lives'>" + lives + "</span>";
+  livesDom.innerHTML =
+    "<span class='info-lives'>Lives</span><span class='info-lives'>" +
+    lives +
+    "</span>";
 
   // Reset the timer
   const timeElement = document.getElementById("info-time");
@@ -502,15 +547,28 @@ function restartGame() {
   const winMessage = document.getElementById("winMessage");
   if (winMessage) winMessage.classList.add("hidden");
 
-  const lostlifemessage = document.getElementById("lostLifeMessage");
-  if (lostlifemessage) lostlifemessage.classList.add("hidden");
+  const lostLifeMessage = document.getElementById("lostLifeMessage");
+  if (lostLifeMessage) lostLifeMessage.classList.add("hidden");
 
   const gameOverMessage = document.getElementById("gameOverMessage");
   if (gameOverMessage) gameOverMessage.classList.add("hidden");
 
-  // Start the game
-  startGame();
+  // Show the introduction and hide game content
+  const introduction = document.getElementById("introduction");
+  const content = document.querySelector(".content");
 
+  if (introduction) {
+    introduction.classList.remove("hidden");
+  }
+  if (content) {
+    content.classList.add("hidden");
+  }
+
+  // checkpointMessageShown = false;
+  // checkpointMessageShown();
+
+  // Reinitialize the game
+  startGame();
 }
 
 function handleEnterKey() {
@@ -646,7 +704,6 @@ function winGame() {
     winMessage.classList.remove("hidden");
   }
 }
-
 
 // Initialize the game when the page loads
 window.onload = startGame();
